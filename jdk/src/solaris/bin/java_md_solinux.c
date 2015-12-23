@@ -839,8 +839,9 @@ GetJREPath(char *path, jint pathsize, const char * arch, jboolean speculative)
 jboolean
 LoadJavaVM(const char *jvmpath, InvocationFunctions *ifn)
 {
-    void *libjvm;
+    printf("# Load Java VM (solaris/bin/java_md_solinux.c)\n");
 
+    void *libjvm;
     JLI_TraceLauncher("JVM path is %s\n", jvmpath);
 
     libjvm = dlopen(jvmpath, RTLD_NOW + RTLD_GLOBAL);
@@ -895,13 +896,16 @@ LoadJavaVM(const char *jvmpath, InvocationFunctions *ifn)
         return JNI_FALSE;
     }
 
+    printf("  # Create ifn->CreateJavaVM by dlsym()\n");
     ifn->CreateJavaVM = (CreateJavaVM_t)
         dlsym(libjvm, "JNI_CreateJavaVM");
+    printf("  # ifn->CreateJavaVM = %p\n", ifn->CreateJavaVM);
     if (ifn->CreateJavaVM == NULL) {
         JLI_ReportErrorMessage(DLL_ERROR2, jvmpath, dlerror());
         return JNI_FALSE;
     }
 
+    printf("  # Create ifn->GetDefaultJavaVMInitArgs by dlsym()\n");
     ifn->GetDefaultJavaVMInitArgs = (GetDefaultJavaVMInitArgs_t)
         dlsym(libjvm, "JNI_GetDefaultJavaVMInitArgs");
     if (ifn->GetDefaultJavaVMInitArgs == NULL) {
@@ -909,8 +913,10 @@ LoadJavaVM(const char *jvmpath, InvocationFunctions *ifn)
         return JNI_FALSE;
     }
 
+    printf("  # Create ifn->GetCreatedJavaVMs by dlsym()\n");
     ifn->GetCreatedJavaVMs = (GetCreatedJavaVMs_t)
         dlsym(libjvm, "JNI_GetCreatedJavaVMs");
+    printf("  # ifn->GetCreatedJavaVMs = %p\n", ifn->GetCreatedJavaVMs);
     if (ifn->GetCreatedJavaVMs == NULL) {
         JLI_ReportErrorMessage(DLL_ERROR2, jvmpath, dlerror());
         return JNI_FALSE;
