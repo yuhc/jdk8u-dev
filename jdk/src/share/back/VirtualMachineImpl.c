@@ -320,6 +320,7 @@ instanceCounts(PacketInputStream *in, PacketOutputStream *out)
         return JNI_TRUE;
     }
     env = getEnv();
+    printf("> jvmtiAllocate classCount (share/back/VirtualMachineImpl.c)\n");
     classes = jvmtiAllocate(classCount * (int)sizeof(jclass));
     for (ii = 0; ii < classCount; ii++) {
         jdwpError errorCode;
@@ -346,6 +347,7 @@ instanceCounts(PacketInputStream *in, PacketOutputStream *out)
         jlong      *counts;
         jvmtiError error;
 
+        printf("> jvmtiAllocate classCount (share/back/VirtualMachineImpl.c)\n");
         counts = jvmtiAllocate(classCount * (int)sizeof(jlong));
         /* Iterate over heap getting info on these classes */
         error = classInstanceCounts(classCount, classes, counts);
