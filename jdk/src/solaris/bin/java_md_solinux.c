@@ -1093,6 +1093,7 @@ JVMInit(InvocationFunctions* ifn, jlong threadStackSize,
         int argc, char **argv,
         int mode, char *what, int ret)
 {
+    printf("# Enter JVMInit (solaris/bin/java_md_solinux.c)\n");
     ShowSplashScreen();
     return ContinueInNewThread(ifn, threadStackSize, argc, argv, mode, what, ret);
 }

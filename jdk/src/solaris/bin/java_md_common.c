@@ -379,6 +379,7 @@ ExecJRE(char *jre, char **argv)
     JLI_TraceLauncher("TRACER_MARKER:About to EXEC\n");
     (void)fflush(stdout);
     (void)fflush(stderr);
+    printf("# ReExec Command: %s (%s)\n (/solaris/bin/java_md_common.c)\n", wanted, argv[0]);
     execv(wanted, argv);
     JLI_ReportErrorMessageSys(JRE_ERROR12, wanted);
     exit(1);
