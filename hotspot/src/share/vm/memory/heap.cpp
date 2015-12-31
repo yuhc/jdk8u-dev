@@ -115,6 +115,7 @@ bool CodeHeap::reserve(size_t reserved_size, size_t committed_size,
   if (!_memory.initialize(rs, c_size)) {
     return false;
   }
+  printf("  # page_size: %ld; rs.base(): %p; rs.size(): %ld (hotspot/vm/../heap.cpp)\n", page_size, rs.base(), rs.size());
 
   on_code_mapping(_memory.low(), _memory.committed_size());
   _number_of_committed_segments = size_to_segments(_memory.committed_size());
@@ -124,10 +125,14 @@ bool CodeHeap::reserve(size_t reserved_size, size_t committed_size,
   const size_t reserved_segments_size = align_size_up(_number_of_reserved_segments, reserved_segments_alignment);
   const size_t committed_segments_size = align_to_page_size(_number_of_committed_segments);
 
+  printf("  # memory: low %p reserved %ld committed %ld (hotspot/vm/../heap.cpp)\n", _memory.low(), _memory.reserved_size(), _memory.committed_size());
+
   // reserve space for _segmap
   if (!_segmap.initialize(reserved_segments_size, committed_segments_size)) {
     return false;
   }
+  printf("  # segment: low %p reserved %ld committed %ld (hotspot/vm/../heap.cpp)\n", _segmap.low_boundary(), reserved_size, committed_size);
+  printf("  # segment num: reserved %ld committed %ld (hotspot/vm/../heap.cpp)\n", _number_of_reserved_segments, _number_of_committed_segments);
 
   MemTracker::record_virtual_memory_type((address)_segmap.low_boundary(), mtCode);
 
@@ -136,6 +141,7 @@ bool CodeHeap::reserve(size_t reserved_size, size_t committed_size,
   assert(_segmap.reserved_size()  >= _segmap.committed_size()     , "just checking");
 
   // initialize remaining instance variables
+  printf("  # initialize remaining instance variables (hotspot/vm/../heap.cpp)\n");
   clear();
   return true;
 }
@@ -195,6 +201,7 @@ void* CodeHeap::allocate(size_t instance_size, bool is_critical) {
 #ifdef ASSERT
     memset((void *)block->allocated_space(), badCodeHeapNewVal, instance_size);
 #endif
+//printf("  # instance_size: %ld; allocated_space: %p (hotspot/vm/../heap.cpp)\n", instance_size, block->allocated_space());
     return block->allocated_space();
   }
 
@@ -220,6 +227,7 @@ void* CodeHeap::allocate(size_t instance_size, bool is_critical) {
 #ifdef ASSERT
     memset((void *)b->allocated_space(), badCodeHeapNewVal, instance_size);
 #endif
+//  printf("  # instance_size: %ld; allocated_space: %p (hotspot/vm/../heap.cpp)\n", instance_size, block->allocated_space());
     return b->allocated_space();
   } else {
     return NULL;
