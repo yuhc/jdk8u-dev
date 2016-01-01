@@ -60,6 +60,7 @@ Generation::Generation(ReservedSpace rs, size_t initial_size, int level) :
   }
   _reserved = MemRegion((HeapWord*)_virtual_space.low_boundary(),
           (HeapWord*)_virtual_space.high_boundary());
+//  printf("General generation: low %p; high %p (hotspot/vm/../generation.cpp)\n", _virtual_space.low_boundary(), _virtual_space.high_boundary());
 }
 
 GenerationSpec* Generation::spec() {

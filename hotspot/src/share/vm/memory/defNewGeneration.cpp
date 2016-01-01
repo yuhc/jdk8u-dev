@@ -270,6 +270,13 @@ void DefNewGeneration::compute_space_boundaries(uintx minimum_eden_size,
   char *to_start   = from_start + survivor_size;
   char *to_end     = to_start   + survivor_size;
 
+  printf(">>>>>>>> /hotspot/vm/../defNewGeneration.cpp\n");
+  printf("new generation\t total %dK [%016p, %016p)\n", (eden_size+survivor_size)/1024, eden_start, to_end);
+  printf("eden space %dK\t[%016p, %016p)\n", eden_size/1024, eden_start, from_start);
+  printf("from space %dK\t[%016p, %016p)\n", survivor_size/1024, from_start, to_start);
+  printf("to   space %dK\t[%016p, %016p)\n", survivor_size/1024, to_start, to_end);
+  printf("<<<<<<<<\n");
+
   assert(to_end == _virtual_space.high(), "just checking");
   assert(Space::is_aligned((HeapWord*)eden_start), "checking alignment");
   assert(Space::is_aligned((HeapWord*)from_start), "checking alignment");
