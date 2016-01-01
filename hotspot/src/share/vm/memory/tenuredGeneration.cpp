@@ -81,6 +81,11 @@ TenuredGeneration::TenuredGeneration(ReservedSpace rs,
     _alloc_buffers = NULL;
   }
 #endif // INCLUDE_ALL_GCS
+
+  printf(">>>>>>>> /hotspot/vm/../tenuredGeneration.cpp\n");
+  printf("tenured generation\ttotal %ldK [0x%016" PRIxPTR ", 0x%016" PRIxPTR ")\n", (_virtual_space.high()-_virtual_space.low())/1024, (uintptr_t)_virtual_space.low(), (uintptr_t)_virtual_space.high());
+  printf("the space %ldK\t[0x%016" PRIxPTR ", 0x%016" PRIxPTR ")\n", (_virtual_space.high()-_virtual_space.low())/1024, (uintptr_t)_virtual_space.low(), (uintptr_t)_virtual_space.high());
+  printf("<<<<<<<<\n");
 }
 
 
