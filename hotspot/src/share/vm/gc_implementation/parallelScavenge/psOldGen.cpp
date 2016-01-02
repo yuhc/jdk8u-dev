@@ -145,6 +145,11 @@ void PSOldGen::initialize_work(const char* perf_data_name, int level) {
 
   // Update the start_array
   start_array()->set_covered_region(cmr);
+
+  printf(">>>>>>>> /hotspot/vm/gc_impl/ps/psOldGen.cpp\n");
+  printf("ParOldGen\t\ttotal %ldK [0x%016" PRIxPTR ", 0x%016" PRIxPTR ")\n", (_virtual_space->high()-_virtual_space->low())/1024, (uintptr_t)_virtual_space->low(), (uintptr_t)_virtual_space->high());
+  printf("object space %7ldK\t[0x%016" PRIxPTR ", 0x%016" PRIxPTR ")\n", (_virtual_space->high()-_virtual_space->low())/1024, (uintptr_t)_virtual_space->low(), (uintptr_t)_virtual_space->high());
+  printf("<<<<<<<<\n");
 }
 
 void PSOldGen::initialize_performance_counters(const char* perf_data_name, int level) {
