@@ -271,7 +271,7 @@ void DefNewGeneration::compute_space_boundaries(uintx minimum_eden_size,
   char *to_end     = to_start   + survivor_size;
 
   printf(">>>>>>>> /hotspot/vm/../defNewGeneration.cpp\n");
-  printf("new generation\t\ttotal %dK [%018p, %018p)\n", (eden_size+survivor_size)/1024, eden_start, to_end);
+  printf("new generation\t\ttotal %ldK [%018p, %018p, %018p)\n", (eden_size+survivor_size)/1024, eden_start, to_start, to_end);
   printf("eden space %dK\t[%018p, %018p)\n", eden_size/1024, eden_start, from_start);
   printf("from space %dK\t[%018p, %018p)\n", survivor_size/1024, from_start, to_start);
   printf("to   space %dK\t[%018p, %018p)\n", survivor_size/1024, to_start, to_end);
