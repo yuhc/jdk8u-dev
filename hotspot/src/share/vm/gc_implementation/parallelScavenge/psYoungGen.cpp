@@ -55,7 +55,6 @@ void PSYoungGen::initialize_virtual_space(ReservedSpace rs, size_t alignment) {
 void PSYoungGen::initialize(ReservedSpace rs, size_t alignment) {
   initialize_virtual_space(rs, alignment);
   initialize_work();
-  printf("PSYoungGen initialize\n");
 }
 
 void PSYoungGen::initialize_work() {
