@@ -1,0 +1,7 @@
+java -Xmx12m -XX:+UseParallelGC -XX:+PrintGCDetails heap
+
+-XX:+UseParNewGC
+-XX:+UseConcMarkSweepGC
+-XX:+UseG1GC
+
+Use information: http://blog.mgm-tp.com/2013/12/benchmarking-g1-and-other-java-7-garbage-collectors/
