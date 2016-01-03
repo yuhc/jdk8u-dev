@@ -567,7 +567,6 @@ event_callback(JNIEnv *env, EventInfo *evinfo)
      *       the lock but then this just becomes one big no-op.
      */
     if ( garbageCollected > 0 ) {
-        printf("# Garbage Collection Happended\n in back/eventHandler.c");
         struct bag *unloadedSignatures = NULL;
 
         /* We want to compact the hash table of all
@@ -903,7 +902,6 @@ cbClassPrepare(jvmtiEnv *jvmti_env, JNIEnv *env,
 static void JNICALL
 cbGarbageCollectionFinish(jvmtiEnv *jvmti_env)
 {
-    printf("# Garbage Collection Finished in back/eventHandler.c\n");
     LOG_CB(("cbGarbageCollectionFinish"));
     ++garbageCollected;
     LOG_MISC(("END cbGarbageCollectionFinish"));

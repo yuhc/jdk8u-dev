@@ -369,13 +369,9 @@ JavaMain(void * _args)
     int ret = 0;
     jlong start, end;
 
-    printf("# Hacked by hyu\n");
-
-    printf("# Register thread\n");
     RegisterThread();
 
     /* Initialize the virtual machine */
-    printf("# Initialize the VM\n");
     start = CounterGet();
     if (!InitializeJVM(&vm, &env, &ifn)) {
         JLI_ReportErrorMessage(JVM_ERROR1);
@@ -402,7 +398,6 @@ JavaMain(void * _args)
         LEAVE();
     }
 
-    printf("# Free known vm\n");
     FreeKnownVMs();  /* after last possible PrintUsage() */
 
     if (JLI_IsTraceLauncher()) {
@@ -446,7 +441,6 @@ JavaMain(void * _args)
      * This method also correctly handles launching existing JavaFX
      * applications that may or may not have a Main-Class manifest entry.
      */
-    printf("# Load mainClass\n");
     mainClass = LoadMainClass(env, mode, what);
     CHECK_EXCEPTION_NULL_LEAVE(mainClass);
     /*
@@ -481,14 +475,12 @@ JavaMain(void * _args)
     CHECK_EXCEPTION_NULL_LEAVE(mainArgs);
 
     /* Invoke main method. */
-    printf("# Invoke mainMethod\n");
     (*env)->CallStaticVoidMethod(env, mainClass, mainID, mainArgs);
 
     /*
      * The launcher's exit code (in the absence of calls to
      * System.exit) will be non-zero if main threw an exception.
      */
-    printf("# System.exit\n");
     ret = (*env)->ExceptionOccurred(env) == NULL ? 0 : 1;
     LEAVE();
 }
@@ -1220,7 +1212,6 @@ InitializeJVM(JavaVM **pvm, JNIEnv **penv, InvocationFunctions *ifn)
                    i, args.options[i].optionString);
     }
 
-    printf("## Create JVM\n");
     r = ifn->CreateJavaVM(pvm, (void **)penv, &args);
     JLI_MemFree(options);
     return r == JNI_OK;

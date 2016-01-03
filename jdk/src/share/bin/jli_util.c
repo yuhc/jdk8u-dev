@@ -41,7 +41,6 @@ JLI_MemAlloc(size_t size)
         perror("malloc");
         exit(1);
     }
-    printf("> malloc %p for size of %d\n", p, size);
     return p;
 }
 
@@ -57,7 +56,6 @@ JLI_MemRealloc(void *ptr, size_t size)
         perror("realloc");
         exit(1);
     }
-    printf("> realloc %p for size of %d\n", p, size);
     return p;
 }
 
@@ -84,7 +82,6 @@ void
 JLI_MemFree(void *ptr)
 {
     free(ptr);
-    printf("> free %p\n", ptr);
 }
 
 /*
