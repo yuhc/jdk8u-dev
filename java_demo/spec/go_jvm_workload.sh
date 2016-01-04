@@ -2,6 +2,7 @@
 
 #jvm_workload=(compiler.compiler compiler.sunflow compress crypto.aes crypto.rsa crypto.signverify derby mpegaudio scimark.fft.large scimark.lu.large scimark.sor.large scimark.sparse.large scimark.fft.small scimark.lu.small scimark.sor.small scimark.sparse.small scimark.monte_carlo serial sunflow xml.transform)
 jvm_workload=(compress scimark.fft.large scimark.sparse.small)
+unset DISPLAY
 
 function run_workload
 {
@@ -11,7 +12,8 @@ function run_workload
 	
 	for l in "${jvm_workload[@]}";
 	do
-		cmd="java -jar ${GC} SPECjvm2008.jar  --parseJvmArgs -i 1 -peak -Dspecjvm.benchmark.threads=4 -ctf false -chf false -ikv -wt 20 -it 240 $l"
+		#cmd="java -jar ${GC} SPECjvm2008.jar  --parseJvmArgs -i 1 -peak -Dspecjvm.benchmark.threads=4 -ctf false -chf false -ikv -wt 20 -it 240 $l"
+		cmd="java -Xbootclasspath/p:lib/javac.jar -jar ${GC} SPECjvm2008.jar  --parseJvmArgs -i 1 -peak -Dspecjvm.benchmark.threads=4 -ctf false -chf false -ikv -wt 20 -it 240 $l"
 		echo $cmd 
 		cat /sys/kernel/mm/transparent_hugepage/enabled > ./collect-$1/${l}_$2
 		$cmd >> ./collect-$1/${l}_$2 &
