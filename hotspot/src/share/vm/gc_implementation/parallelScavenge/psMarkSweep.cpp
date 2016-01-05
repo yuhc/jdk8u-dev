@@ -391,8 +391,6 @@ bool PSMarkSweep::invoke_no_policy(bool clear_all_softrefs) {
   ParallelTaskTerminator::print_termination_counts();
 #endif
 
-  printf("GC terminated\n");
-
   _gc_timer->register_gc_end();
 
   _gc_tracer->report_gc_end(_gc_timer->gc_end(), _gc_timer->time_partitions());
