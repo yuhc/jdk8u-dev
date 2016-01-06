@@ -986,8 +986,8 @@ void PSParallelCompact::pre_compact(PreGCValues* pre_gc_values)
   printf("\n> from space and to space swapped (parralScavenge/psParallelCompact.cpp)\n");
   MutableSpace* from_space = heap->young_gen()->from_space();
   MutableSpace* to_space = heap->young_gen()->to_space();
-  printf("> from space %7ldK\t[0x%016" PRIxPTR ", 0x%016" PRIxPTR ")\n", (from_space->end()-from_space->bottom())/1024, (uintptr_t)from_space->bottom(), (uintptr_t)from_space->end());
-  printf("> to   space %7ldK\t[0x%016" PRIxPTR ", 0x%016" PRIxPTR ")\n", (to_space->end()-to_space->bottom())/1024, (uintptr_t)to_space->bottom(), (uintptr_t)to_space->end());
+  printf("> from space %7ldK\t[0x%016" PRIxPTR ", 0x%016" PRIxPTR ")\n", (from_space->end()-from_space->bottom())/(1024/8), (uintptr_t)from_space->bottom(), (uintptr_t)from_space->end());
+  printf("> to   space %7ldK\t[0x%016" PRIxPTR ", 0x%016" PRIxPTR ")\n\n", (to_space->end()-to_space->bottom())/(1024/8), (uintptr_t)to_space->bottom(), (uintptr_t)to_space->end());
 
   pre_gc_values->fill(heap);
 

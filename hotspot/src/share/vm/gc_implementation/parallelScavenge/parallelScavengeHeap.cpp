@@ -693,6 +693,12 @@ void ParallelScavengeHeap::resize_young_gen(size_t eden_size,
 
   // Delegate the resize to the generation.
   _young_gen->resize(eden_size, survivor_size);
+
+  printf("\n> young generation resized\n");
+  printf("> PSYoungGen\t\ttotal %ldK [0x%016" PRIxPTR ", 0x%016" PRIxPTR ", 0x%016" PRIxPTR ")\n", (_young_gen->_eden_space->end()-_young_gen->_eden_space->bottom()+_young_gen->_from_space->end()-_young_gen->_from_space->bottom())/1024*8, (uintptr_t)_young_gen->_eden_space->bottom(), (uintptr_t)_young_gen->_eden_space->end(), (uintptr_t)(_young_gen->_from_space->end()>_young_gen->_to_space->end()?_young_gen->_from_space->end():_young_gen->_to_space->end()));
+  printf("> eden space %7ldK\t[0x%016" PRIxPTR ", 0x%016" PRIxPTR ")\n", (_young_gen->_eden_space->end()-_young_gen->_eden_space->bottom())/(1024/8), (uintptr_t)_young_gen->_eden_space->bottom(), (uintptr_t)_young_gen->_eden_space->end());
+  printf("> from space %7ldK\t[0x%016" PRIxPTR ", 0x%016" PRIxPTR ")\n", (_young_gen->_from_space->end()-_young_gen->_from_space->bottom())/(1024/8), (uintptr_t)_young_gen->_from_space->bottom(), (uintptr_t)_young_gen->_from_space->end());
+  printf("> to   space %7ldK\t[0x%016" PRIxPTR ", 0x%016" PRIxPTR ")\n\n", (_young_gen->_to_space->end()-_young_gen->_to_space->bottom())/(1024/8), (uintptr_t)_young_gen->_to_space->bottom(), (uintptr_t)_young_gen->_to_space->end());
 }
 
 // Before delegating the resize to the old generation,
@@ -709,6 +715,8 @@ void ParallelScavengeHeap::resize_old_gen(size_t desired_free_space) {
 
   // Delegate the resize to the generation.
   _old_gen->resize(desired_free_space);
+
+  printf("\nold generation resized\n");
 }
 
 ParallelScavengeHeap::ParStrongRootsScope::ParStrongRootsScope() {
