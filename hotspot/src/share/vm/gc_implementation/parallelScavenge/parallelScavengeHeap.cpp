@@ -716,7 +716,9 @@ void ParallelScavengeHeap::resize_old_gen(size_t desired_free_space) {
   // Delegate the resize to the generation.
   _old_gen->resize(desired_free_space);
 
-  printf("\nold generation resized\n");
+  printf("\n> old generation resized\n");
+  printf("> ParOldGen\t\ttotal %ldK [0x%016" PRIxPTR ", 0x%016" PRIxPTR ")\n", (_old_gen->_object_space->end()-_old_gen->_object_space->bottom())/(1024/8), (uintptr_t)_old_gen->_object_space->bottom(), (uintptr_t)_old_gen->_object_space->end());
+  printf("> object space %7ldK\t[0x%016" PRIxPTR ", 0x%016" PRIxPTR ")\n", (_old_gen->_object_space->end()-_old_gen->_object_space->bottom())/(1024/8), (uintptr_t)_old_gen->_object_space->bottom(), (uintptr_t)_old_gen->_object_space->end());
 }
 
 ParallelScavengeHeap::ParStrongRootsScope::ParStrongRootsScope() {
