@@ -206,12 +206,11 @@ void PSYoungGen::set_space_boundaries(size_t eden_size, size_t survivor_size) {
     to_space()->initialize(to_mr  , true, ZapUnusedHeapArea);
   from_space()->initialize(from_mr, true, ZapUnusedHeapArea);
 
-  printf(">>>>>>>> /hotspot/vm/gc_impl/ps/psYoungGen.cpp\n");
-  printf("PSYoungGen\t\ttotal %ldK [0x%016" PRIxPTR ", 0x%016" PRIxPTR ", 0x%016" PRIxPTR ")\n", (eden_size+survivor_size)/1024, (uintptr_t)eden_start, (uintptr_t)from_start, (uintptr_t)_virtual_space->high());
-  printf("eden space %7ldK\t[0x%016" PRIxPTR ", 0x%016" PRIxPTR ")\n", eden_size/1024, (uintptr_t)eden_start, (uintptr_t)to_start);
-  printf("from space %7ldK\t[0x%016" PRIxPTR ", 0x%016" PRIxPTR ")\n", survivor_size/1024, (uintptr_t)to_start, (uintptr_t)from_start);
-  printf("to   space %7ldK\t[0x%016" PRIxPTR ", 0x%016" PRIxPTR ")\n", survivor_size/1024, (uintptr_t)from_start, (uintptr_t)from_end);
-  printf("<<<<<<<<\n");
+  printf("> young generation created (/hotspot/vm/gc_impl/ps/psYoungGen.cpp)\n");
+  printf("> PSYoungGen\t\ttotal %ldK [0x%016" PRIxPTR ", 0x%016" PRIxPTR ", 0x%016" PRIxPTR ")\n", (eden_size+survivor_size)/1024, (uintptr_t)eden_start, (uintptr_t)from_start, (uintptr_t)_virtual_space->high());
+  printf("> eden space %7ldK\t[0x%016" PRIxPTR ", 0x%016" PRIxPTR ")\n", eden_size/1024, (uintptr_t)eden_start, (uintptr_t)to_start);
+  printf("> from space %7ldK\t[0x%016" PRIxPTR ", 0x%016" PRIxPTR ")\n", survivor_size/1024, (uintptr_t)to_start, (uintptr_t)from_start);
+  printf("> to   space %7ldK\t[0x%016" PRIxPTR ", 0x%016" PRIxPTR ")\n\n", survivor_size/1024, (uintptr_t)from_start, (uintptr_t)from_end);
 }
 
 #ifndef PRODUCT
