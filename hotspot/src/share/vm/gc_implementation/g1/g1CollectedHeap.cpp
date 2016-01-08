@@ -3983,6 +3983,8 @@ G1CollectedHeap::do_collection_pause_at_safepoint(double target_pause_time_ms) {
     g1_policy()->phase_times()->note_gc_start(active_workers, mark_in_progress());
     log_gc_header();
 
+    printf("\n> GC pause started\n");
+
     TraceCollectorStats tcs(g1mm()->incremental_collection_counters());
     TraceMemoryManagerStats tms(false /* fullGC */, gc_cause());
 
@@ -4075,6 +4077,8 @@ G1CollectedHeap::do_collection_pause_at_safepoint(double target_pause_time_ms) {
         gclog_or_tty->print_cr("\nAfter recording pause start.\nYoung_list:");
         _young_list->print();
 #endif // YOUNG_LIST_VERBOSE
+
+        _young_list->print(); //printf
 
         if (g1_policy()->during_initial_mark_pause()) {
           concurrent_mark()->checkpointRootsInitialPre();
@@ -4183,6 +4187,7 @@ G1CollectedHeap::do_collection_pause_at_safepoint(double target_pause_time_ms) {
         _young_list->print();
         g1_policy()->print_collection_set(g1_policy()->inc_cset_head(), gclog_or_tty);
 #endif // YOUNG_LIST_VERBOSE
+        _young_list->print(); //printf
 
         _allocator->init_mutator_alloc_region();
 
@@ -4257,6 +4262,8 @@ G1CollectedHeap::do_collection_pause_at_safepoint(double target_pause_time_ms) {
       gc_epilogue(false);
     }
 
+    printf("> GC pause finished\n");
+
     // Print the remainder of the GC log output.
     log_gc_footer(os::elapsedTime() - pause_start_sec);
 
@@ -4279,6 +4286,7 @@ G1CollectedHeap::do_collection_pause_at_safepoint(double target_pause_time_ms) {
     // TraceMemoryManagerStats is called) so that the G1 memory pools are updated
     // before any GC notifications are raised.
     g1mm()->update_sizes();
+        _young_list->print(); //printf
 
     _gc_tracer_stw->report_evacuation_info(&evacuation_info);
     _gc_tracer_stw->report_tenuring_threshold(_g1_policy->tenuring_threshold());
