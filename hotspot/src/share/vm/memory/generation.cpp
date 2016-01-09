@@ -740,6 +740,9 @@ bool OneContigSpaceCardGeneration::grow_by(size_t bytes) {
     // Expand space -- also expands space's BOT
     // (which uses (part of) shared array above)
     _the_space->set_end((HeapWord*)_virtual_space.high());
+    printf("\n> tenured generation grows (/hotspot/vm/../generation.cpp)\n");
+    printf("> tenured generation\ttotal %ldK [0x%016" PRIxPTR ", 0x%016" PRIxPTR ")\n", (_virtual_space.high()-_virtual_space.low())/1024, (uintptr_t)_virtual_space.low(), (uintptr_t)_virtual_space.high());
+      printf("> the space %ldK\t[0x%016" PRIxPTR ", 0x%016" PRIxPTR ")\n", (_virtual_space.high()-_virtual_space.low())/1024, (uintptr_t)_virtual_space.low(), (uintptr_t)_virtual_space.high());
 
     // update the space and generation capacity counters
     update_counters();
