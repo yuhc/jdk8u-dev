@@ -8,13 +8,17 @@ elif [ $# = 1 ]; then
         ALG="ParallelGC"
     elif [ $1 = 'g' ]; then
         ALG="G1GC"
+    elif [ $1 = 'n' ]; then
+        ALG="ParNewGC"
     fi
     LOG=""
 elif [ $# = 2 ]; then
     if [ $1 = 'p' ]; then
         ALG="ParallelGC"
-    elif [$1 = 'g' ]; then
+    elif [ $1 = 'g' ]; then
         ALG="G1GC"
+    elif [ $1 = 'n' ]; then
+        ALG="ParNewGC"
     fi
     if [ $2 = 'y' ]; then
         LOG="-XX:+PrintGCDetails"
