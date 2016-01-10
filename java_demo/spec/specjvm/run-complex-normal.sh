@@ -9,7 +9,7 @@ function run_workload
 	GC="-XX:+Use$1"
 
 	mkdir -p collect-$1
-	
+
 	for l in "${jvm_workload[@]}";
 	do
 		#cmd="java -jar ${GC} SPECjvm2008.jar  --parseJvmArgs -i 1 -peak -Dspecjvm.benchmark.threads=4 -ctf false -chf false -ikv -wt 20 -it 240 $l"
@@ -25,7 +25,7 @@ function run_workload
 		$gc_cmd > ./collect-$1/gc_${l}_${2}
 
 		sudo kill -INT `pgrep perf`
-		
+
 		for job in `jobs -p`;
 		do
 			wait $job
@@ -38,7 +38,7 @@ function hugepage
 	if [[ "$1" = "on" ]]; then
 		echo "Hugepage ON"
 		sudo sh -c "echo always > /sys/kernel/mm/transparent_hugepage/enabled"
-	else [[ "$1" = "off" ]]; then
+    elif [[ "$1" = "off" ]]; then
 		echo "Hugepage OFF"
 		sudo sh -c "echo never > /sys/kernel/mm/transparent_hugepage/enabled"
     else
