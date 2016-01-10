@@ -30,6 +30,7 @@
 #include "gc_implementation/parallelScavenge/psVirtualspace.hpp"
 #include "gc_implementation/shared/mutableSpace.hpp"
 #include "gc_implementation/shared/spaceCounters.hpp"
+#include <sys/mman.h>
 
 class PSMarkSweepDecorator;
 

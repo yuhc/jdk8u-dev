@@ -193,6 +193,9 @@ void PSYoungGen::set_space_boundaries(size_t eden_size, size_t survivor_size) {
   char *from_start = to_start   + survivor_size;
   char *from_end   = from_start + survivor_size;
 
+  //enable HUGEPAGE in eden
+  madvise(eden_start, eden_size, MADV_HUGEPAGE);
+
   assert(from_end == virtual_space()->high(), "just checking");
   assert(is_object_aligned((intptr_t)eden_start), "checking alignment");
   assert(is_object_aligned((intptr_t)to_start),   "checking alignment");

@@ -35,6 +35,7 @@
 #include "gc_interface/collectedHeap.inline.hpp"
 #include "memory/collectorPolicy.hpp"
 #include "utilities/ostream.hpp"
+#include <sys/mman.h>
 
 class AdjoiningGenerations;
 class GCHeapSummary;

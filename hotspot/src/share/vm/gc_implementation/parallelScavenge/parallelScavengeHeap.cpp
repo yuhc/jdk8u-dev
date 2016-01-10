@@ -691,10 +691,14 @@ void ParallelScavengeHeap::resize_young_gen(size_t eden_size,
     gens()->adjust_boundary_for_young_gen_needs(eden_size, survivor_size);
   }
 
+  printf("\n> before young generation resized -madvise\n");
+  madvise(_young_gen->_eden_space->bottom(), (_young_gen->_eden_space->end()-_young_gen->_eden_space->bottom())*8, MADV_NOHUGEPAGE);
+
   // Delegate the resize to the generation.
   _young_gen->resize(eden_size, survivor_size);
 
-  printf("\n> young generation resized\n");
+  madvise(_young_gen->_eden_space->bottom(), (_young_gen->_eden_space->end()-_young_gen->_eden_space->bottom())*8, MADV_HUGEPAGE);
+  printf("\n> young generation resized +madvise\n");
   printf("> PSYoungGen\t\ttotal %ldK [0x%016" PRIxPTR ", 0x%016" PRIxPTR ", 0x%016" PRIxPTR ")\n", (_young_gen->_eden_space->end()-_young_gen->_eden_space->bottom()+_young_gen->_from_space->end()-_young_gen->_from_space->bottom())/1024*8, (uintptr_t)_young_gen->_eden_space->bottom(), (uintptr_t)_young_gen->_eden_space->end(), (uintptr_t)(_young_gen->_from_space->end()>_young_gen->_to_space->end()?_young_gen->_from_space->end():_young_gen->_to_space->end()));
   printf("> eden space %7ldK\t[0x%016" PRIxPTR ", 0x%016" PRIxPTR ")\n", (_young_gen->_eden_space->end()-_young_gen->_eden_space->bottom())/(1024/8), (uintptr_t)_young_gen->_eden_space->bottom(), (uintptr_t)_young_gen->_eden_space->end());
   printf("> from space %7ldK\t[0x%016" PRIxPTR ", 0x%016" PRIxPTR ")\n", (_young_gen->_from_space->end()-_young_gen->_from_space->bottom())/(1024/8), (uintptr_t)_young_gen->_from_space->bottom(), (uintptr_t)_young_gen->_from_space->end());
@@ -712,6 +716,9 @@ void ParallelScavengeHeap::resize_old_gen(size_t desired_free_space) {
     }
     gens()->adjust_boundary_for_old_gen_needs(desired_free_space);
   }
+
+//  printf("\n> before old generation resized\n");
+//  madvise(_young_gen->_eden_space->bottom(), (_old_gen->_object_space->end()-_old_gen->_object_space->bottom())*8, MADV_NOHUGEPAGE);
 
   // Delegate the resize to the generation.
   _old_gen->resize(desired_free_space);
