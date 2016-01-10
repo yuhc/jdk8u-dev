@@ -328,6 +328,10 @@ void DefNewGeneration::compute_space_boundaries(uintx minimum_eden_size,
 }
 
 void DefNewGeneration::swap_spaces() {
+    printf("\n> from space and to space swapped (memory/defNewGeneration.cpp)\n");
+    printf("> from space %7ldK\t[0x%016" PRIxPTR ", 0x%016" PRIxPTR ")\n", (to()->end()-to()->bottom())/(1024/8), (uintptr_t)to()->bottom(), (uintptr_t)to()->end());
+    printf("> to   space %7ldK\t[0x%016" PRIxPTR ", 0x%016" PRIxPTR ")\n\n", (from()->end()-from()->bottom())/(1024/8), (uintptr_t)from()->bottom(), (uintptr_t)from()->end());
+
   ContiguousSpace* s = from();
   _from_space        = to();
   _to_space          = s;
