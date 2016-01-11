@@ -237,7 +237,22 @@ DefNewGeneration::DefNewGeneration(ReservedSpace rs,
 void DefNewGeneration::compute_space_boundaries(uintx minimum_eden_size,
                                                 bool clear_space,
                                                 bool mangle_space) {
-  uintx alignment =
+/*
+    printf("\n> before new generation created or grows (/hotspot/vm/../defNewGeneration.cpp)\n");
+    HeapWord *__eden_start = eden()->bottom();
+    HeapWord *__from_start = eden()->end();
+    HeapWord *__to_start   = from()->end()>to()->end()?to()->end():from()->end();
+    HeapWord *__to_end     = from()->end()<to()->end()?to()->end():from()->end();
+
+    printf("> new generation\ttotal %ldK [%018p, %018p, %018p)\n", (__to_start-__eden_start)/1024*8, __eden_start, __to_start, __to_end);
+    printf("> eden space %7dK\t[%018p, %018p)\n", (__from_start-__eden_start)/1024*8, __eden_start, __from_start);
+    printf("> from space %7dK\t[%018p, %018p)\n", (__to_start-__from_start)/1024*8, __from_start, __to_start);
+    printf("> to   space %7dK\t[%018p, %018p)\n", (__to_end-__to_start)/1024*8, __to_start, __to_end);
+*/
+    printf("\neden space -madvise\n");
+    madvise(eden()->bottom(), (eden()->end()-eden()->bottom())*8, MADV_NOHUGEPAGE);
+
+ uintx alignment =
     GenCollectedHeap::heap()->collector_policy()->space_alignment();
 
   // If the spaces are being cleared (only done at heap initialization
@@ -270,7 +285,10 @@ void DefNewGeneration::compute_space_boundaries(uintx minimum_eden_size,
   char *to_start   = from_start + survivor_size;
   char *to_end     = to_start   + survivor_size;
 
-  printf("\n> new generation created (/hotspot/vm/../defNewGeneration.cpp)\n");
+  printf("\neden space +madvise\n");
+  madvise(eden_start, eden_size, MADV_HUGEPAGE);
+
+  printf("\n> new generation created or grows (/hotspot/vm/../defNewGeneration.cpp)\n");
   printf("> new generation\ttotal %ldK [%018p, %018p, %018p)\n", (eden_size+survivor_size)/1024, eden_start, to_start, to_end);
   printf("> eden space %7dK\t[%018p, %018p)\n", eden_size/1024, eden_start, from_start);
   printf("> from space %7dK\t[%018p, %018p)\n", survivor_size/1024, from_start, to_start);

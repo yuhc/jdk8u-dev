@@ -30,6 +30,7 @@
 #include "gc_implementation/shared/generationCounters.hpp"
 #include "memory/generation.hpp"
 #include "utilities/macros.hpp"
+#include <sys/mman.h>
 
 // TenuredGeneration models the heap containing old (promoted/tenured) objects.
 

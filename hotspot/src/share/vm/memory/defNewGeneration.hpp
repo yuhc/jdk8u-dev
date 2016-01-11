@@ -31,6 +31,7 @@
 #include "gc_implementation/shared/copyFailedInfo.hpp"
 #include "memory/generation.inline.hpp"
 #include "utilities/stack.hpp"
+#include <sys/mman.h>
 
 class EdenSpace;
 class ContiguousSpace;
