@@ -128,6 +128,9 @@ void PSOldGen::initialize_work(const char* perf_data_name, int level) {
   //
   // ObjectSpace stuff
   //
+  
+  printf("old generation created +madvise\n");
+  madvise(virtual_space()->low(), _virtual_space->high()-_virtual_space->low(), MADV_HUGEPAGE);
 
   _object_space = new MutableSpace(virtual_space()->alignment());
 

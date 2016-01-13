@@ -198,9 +198,9 @@ void PSYoungGen::set_space_boundaries(size_t eden_size, size_t survivor_size) {
   //madvise(eden_start, eden_size, MADV_HUGEPAGE);
 
   //enable HUGEPAGE in from_to
-  printf("from&to space created +madvise\n");
-  madvise(from_start, survivor_size, MADV_HUGEPAGE);
-  madvise(to_start, survivor_size, MADV_HUGEPAGE);
+//  printf("from&to space created +madvise\n");
+//  madvise(from_start, survivor_size, MADV_HUGEPAGE);
+//  madvise(to_start, survivor_size, MADV_HUGEPAGE);
 
 
   assert(from_end == virtual_space()->high(), "just checking");
