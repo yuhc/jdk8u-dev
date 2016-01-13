@@ -1,7 +1,7 @@
 #! /bin/bash
 
 #jvm_workload=(compiler.compiler compiler.sunflow compress crypto.aes crypto.rsa crypto.signverify derby mpegaudio scimark.fft.large scimark.lu.large scimark.sor.large scimark.sparse.large scimark.fft.small scimark.lu.small scimark.sor.small scimark.sparse.small scimark.monte_carlo serial sunflow xml.transform)
-jvm_workload=(compiler.compiler)
+jvm_workload=(scimark.fft.large)
 unset DISPLAY
 
 function run_workload
@@ -12,17 +12,23 @@ function run_workload
 
 	for l in "${jvm_workload[@]}";
 	do
-		#cmd="java -jar ${GC} SPECjvm2008.jar  --parseJvmArgs -i 1 -peak -Dspecjvm.benchmark.threads=4 -ctf false -chf false -ikv -wt 20 -it 240 $l"
-		cmd="java -Xbootclasspath/p:lib/javac.jar -jar ${GC} SPECjvm2008.jar  --parseJvmArgs -i 1 -peak -Dspecjvm.benchmark.threads=4 -ctf false -chf false -ikv -wt 20 -it 240 $l"
-		echo $cmd 
-		cat /sys/kernel/mm/transparent_hugepage/enabled > ./collect-$1/${l}_$2
-		$cmd >> ./collect-$1/${l}_$2 &
+		# clear the cache
+		sync
+		echo 3 | sudo tee /proc/sys/vm/drop_caches > /dev/null
+		NOW=`date +"%H-%M"`
 
-		sudo perf stat -p `pgrep java` -e LLC-loads -e LLC-load-misses 2> ./collect-$1/perf_${l}_${2} &
+		#cmd="java -jar ${GC} SPECjvm2008.jar  --parseJvmArgs -i 1 -peak -Dspecjvm.benchmark.threads=4 -ctf false -chf false -ikv -wt 20 -it 240 $l"
+		#cmd="java -Xbootclasspath/p:lib/javac.jar -jar ${GC} SPECjvm2008.jar  --parseJvmArgs -i 1 -peak -Dspecjvm.benchmark.threads=4 -ctf false -chf false -ikv -wt 20 -it 240 $l"
+		cmd="java -Xbootclasspath/p:lib/javac.jar -jar ${GC} SPECjvm2008.jar  --parseJvmArgs -i 1 -peak -Dspecjvm.benchmark.threads=4 -ctf false -chf false -ikv -wt 0 -it 300 $l"
+		echo $cmd 
+		cat /sys/kernel/mm/transparent_hugepage/enabled > ./collect-$1/${l}_$2_${NOW}
+		$cmd >> ./collect-$1/${l}_$2_${NOW} &
+
+		#sudo perf stat -p `pgrep java` -e LLC-loads -e LLC-load-misses 2> ./collect-$1/perf_${l}_${2} &
 
 		gc_cmd="jstat -gcutil `pgrep java` 3s"
 		echo $gc_cmd
-		$gc_cmd > ./collect-$1/gc_${l}_${2}
+		$gc_cmd > ./collect-$1/gc_${l}_${2}_${NOW}
 
 		sudo kill -INT `pgrep perf`
 
@@ -35,16 +41,16 @@ function run_workload
 
 function hugepage
 {
-	if [[ "$1" = "on" ]]; then
-		echo "Hugepage ON"
-		sudo sh -c "echo always > /sys/kernel/mm/transparent_hugepage/enabled"
+    if [[ "$1" = "on" ]]; then
+	echo "Hugepage ON"
+	sudo sh -c "echo always > /sys/kernel/mm/transparent_hugepage/enabled"
     elif [[ "$1" = "off" ]]; then
-		echo "Hugepage OFF"
-		sudo sh -c "echo never > /sys/kernel/mm/transparent_hugepage/enabled"
+	echo "Hugepage OFF"
+	sudo sh -c "echo never > /sys/kernel/mm/transparent_hugepage/enabled"
     else
         echo "Hugepage MADVISE"
-		sudo sh -c "echo madvise > /sys/kernel/mm/transparent_hugepage/enabled"
-	fi
+	sudo sh -c "echo madvise > /sys/kernel/mm/transparent_hugepage/enabled"
+    fi
 }
 
 control_c()
@@ -59,7 +65,7 @@ control_c()
 
 trap control_c SIGINT
 
-hugepage off
+hugepage on
 for i in `seq 1 1`;
 do
 	echo "iteration: $i"
@@ -69,13 +75,13 @@ do
 	run_workload ParallelGC hoff_gon_$i
 done
 
-hugepage on
-for i in `seq 1 1`; 
-do
-	echo "iteration: $i"
+#hugepage on
+#for i in `seq 1 1`; 
+#do
+#	echo "iteration: $i"
 	#run_workload G1GC hon_gon_$i
 	#run_workload ConcMarkSweepGC hon_gon_$i
 	#run_workload ParallelGC hon_gon_$i
-	run_workload ParallelGC hoff_gon_$i
-done
+#	run_workload ParallelGC hoff_gon_$i
+#done
 
