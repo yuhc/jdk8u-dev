@@ -194,8 +194,14 @@ void PSYoungGen::set_space_boundaries(size_t eden_size, size_t survivor_size) {
   char *from_end   = from_start + survivor_size;
 
   //enable HUGEPAGE in eden
-  printf("young generation created +madvise\n");
-  madvise(eden_start, eden_size, MADV_HUGEPAGE);
+  //printf("young generation created +madvise\n");
+  //madvise(eden_start, eden_size, MADV_HUGEPAGE);
+
+  //enable HUGEPAGE in from_to
+  printf("from&to space created +madvise\n");
+  madvise(from_start, survivor_size, MADV_HUGEPAGE);
+  madvise(to_start, survivor_size, MADV_HUGEPAGE);
+
 
   assert(from_end == virtual_space()->high(), "just checking");
   assert(is_object_aligned((intptr_t)eden_start), "checking alignment");
