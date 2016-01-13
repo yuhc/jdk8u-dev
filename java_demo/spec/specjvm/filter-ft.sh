@@ -1,6 +1,7 @@
 #!/bin/sh
 
-SPACE='eden space'
+SPACE='from space  '
+SPACE2='to   space  '
 
 # ${1} should be the name of the directory
 COUNT=1
@@ -11,6 +12,6 @@ do
     echo ${file} | sed 's/^.*\///'
     grep ${file} -e "result:.*ops" | sed 's/^.*result:\s//'
 
-    grep ${file} -e "> ${SPACE}" | sed 's/^.*space\s\+\([0-9]\+\)K.*/\1/' \
+    grep ${file} -e "> ${SPACE}\|> ${SPACE2}" | sed 's/^.*space\s\+\([0-9]\+\)K.*/\1/' \
         | awk '{s+=$1; n+=1} END {print s/n,"K"}'
 done
