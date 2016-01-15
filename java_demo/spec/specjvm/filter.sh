@@ -2,11 +2,13 @@
 
 SPACE='eden space'
 EDEN='eden space'
+FROM='from space  '
+TO='to   space  '
 OLD='object space'
 
 # ${1} should be the name of the directory
 COUNT=1
-for file in ${1}/derby*
+for file in ${1}/mp*
 do
     #echo -n ${COUNT}:
     #COUNT=$((COUNT+1))
@@ -16,6 +18,10 @@ do
 
     grep ${file} -e "> ${EDEN}" | sed 's/^.*space\s\+\([0-9]\+\)K.*/\1/' \
         | awk 'BEGIN{mn=1000000}{if (mn>$1) {mn=$1} if (mx<$1) {mx=$1} s+=$1; n+=1} END {print "EDEN => MIN:",mn,"K"," AVG:",s/n,"K"," MAX:",mx,"K"}'
+    grep ${file} -e "> ${FROM}" | sed 's/^.*space\s\+\([0-9]\+\)K.*/\1/' \
+        | awk 'BEGIN{mn=1000000}{if (mn>$1) {mn=$1} if (mx<$1) {mx=$1} s+=$1; n+=1} END {print "FROM => MIN:",mn,"K"," AVG:",s/n,"K"," MAX:",mx,"K"}'
+    grep ${file} -e "> ${TO}" | sed 's/^.*space\s\+\([0-9]\+\)K.*/\1/' \
+        | awk 'BEGIN{mn=1000000}{if (mn>$1) {mn=$1} if (mx<$1) {mx=$1} s+=$1; n+=1} END {print "TO   => MIN:",mn,"K"," AVG:",s/n,"K"," MAX:",mx,"K"}'
     grep ${file} -e "> ${OLD}" | sed 's/^.*space\s\+\([0-9]\+\)K.*/\1/' \
         | awk 'BEGIN{mn=1000000}{if (mn>$1) {mn=$1} if (mx<$1) {mx=$1} s+=$1; n+=1} END {print "OLD  => MIN:",mn,"K"," AVG:",s/n,"K"," MAX:",mx,"K"}'
 done
