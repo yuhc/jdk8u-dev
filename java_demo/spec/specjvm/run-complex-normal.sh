@@ -2,6 +2,7 @@
 
 #jvm_workload=(compiler.compiler compiler.sunflow compress crypto.aes crypto.rsa crypto.signverify derby mpegaudio scimark.fft.large scimark.lu.large scimark.sor.large scimark.sparse.large scimark.fft.small scimark.lu.small scimark.sor.small scimark.sparse.small scimark.monte_carlo serial sunflow xml.transform)
 jvm_workload=(scimark.fft.large)
+#jvm_workload=(mpegaudio derby)
 unset DISPLAY
 
 function run_workload
@@ -24,7 +25,7 @@ function run_workload
 		cat /sys/kernel/mm/transparent_hugepage/enabled > ./collect-$1/${l}_$2_${NOW}
 		$cmd >> ./collect-$1/${l}_$2_${NOW} &
 
-		#sudo perf stat -p `pgrep java` -e LLC-loads -e LLC-load-misses 2> ./collect-$1/perf_${l}_${2} &
+		sudo perf stat -p `pgrep java` -e cache-references,cache-misses,page-faults,LLC-loads,LLC-load-misses,L1-dcache-loads,L1-dcache-load-misses,L1-icache-loads,L1-icache-load-misses,dTLB-loads,dTLB-load-misses,iTLB-load,iTLB-load-misses 2> ./collect-$1/perf_${l}_${2}_${NOW} &
 
 		gc_cmd="jstat -gcutil `pgrep java` 3s"
 		echo $gc_cmd
