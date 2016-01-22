@@ -1,6 +1,7 @@
 #! /bin/bash
 
-jvm_workload=(avrora fop h2 jython luindex lusearch pmd sunflow tomcat tradebeans xalan)
+jvm_workload=(jython)
+#jvm_workload=(avrora fop h2 jython luindex lusearch pmd sunflow tomcat tradebeans xalan)
 #jvm_workload=(avrora batik eclipse fop h2 jython luindex lusearch pmd sunflow tomcat tradebeans tradesoap xalan)
 PAR="--size superlarge"
 
@@ -17,7 +18,8 @@ function run_workload
 		echo 3 | sudo tee /proc/sys/vm/drop_caches > /dev/null
 		NOW=`date +"%H-%M"`
 
-		cmd="java -jar ${GC} dacapo-9.12-bach.jar $l --no-validation ${PAR}"
+		#cmd="java -jar ${GC} dacapo-9.12-bach.jar $l --no-validation ${PAR}"
+		cmd="java -jar ${GC} ./benchmarks/dacapo.jar $l --no-validation ${PAR}"
 		echo $cmd 
 		cat /sys/kernel/mm/transparent_hugepage/enabled > ./collect-$1/${l}_$2_${NOW}
 		$cmd &>> ./collect-$1/${l}_$2_${NOW} &
@@ -63,7 +65,7 @@ control_c()
 
 trap control_c SIGINT
 
-hugepage on
+hugepage off
 for i in `seq 1 10`;
 do
 	echo "iteration: $i"
